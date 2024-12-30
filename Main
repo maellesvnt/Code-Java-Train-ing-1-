@@ -1,0 +1,105 @@
+import java.awt.Color;
+import java.awt.Graphics;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
+import javax.swing.JFrame;
+import javax.swing.SwingUtilities;
+
+public class Main extends JFrame implements Runnable {
+    /**
+     *
+     */
+    private int width = 500;
+    private int height= 350;
+
+
+    //Create and initialize a ball object and its contained
+     public BallContainer ballContainer1 = new BallContainer();
+     public BallContainer ballContainer2 = new BallContainer();
+     List<Ball> balls = new ArrayList<>();
+
+    //constructor
+    public Main(){
+        Random random = new Random();
+        // containers
+        ballContainer1 = new BallContainer(0,0,width/2,height);
+        ballContainer2 = new BallContainer(width/2,0,width,height);
+        // Black balls
+        for (int i=0; i<100; i++) {
+            Ball balli = new Ball(ballContainer1.getMinX()+random.nextInt(ballContainer1.getWidth()), ballContainer1.getMinY()+random.nextInt(ballContainer1.getWidth()),"CO2",Color.BLACK);
+            balli.setSpeed(2);
+            balli.setContainer(ballContainer1);
+            balls.add(balli);
+        }
+        // Red balls
+        for (int i=100; i<300; i++) {
+            Ball balli = new Ball(ballContainer1.getMinX()+random.nextInt(ballContainer1.getWidth()), ballContainer1.getMinY()+random.nextInt(ballContainer1.getWidth()),"02",Color.RED);
+            balli.setSpeed(2);
+            balli.setContainer(ballContainer1);
+            balls.add(balli);
+        }
+        //Blue balls
+        for (int i=300; i<1000; i++) {
+            Ball balli = new Ball(ballContainer1.getMinX()+random.nextInt(ballContainer1.getWidth()), ballContainer1.getMinY()+random.nextInt(ballContainer1.getWidth()),"N2",Color.BLUE);
+            balli.setSpeed(2);
+            balli.setContainer(ballContainer1);
+            balls.add(balli);
+        }
+        
+        setSize(width, height);
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
+
+    }
+    //Paint the ball(s)
+    public void paint(Graphics g){
+        SwingUtilities.invokeLater(null);
+        super.paint(g);
+        // containers
+        g.setColor(Color.LIGHT_GRAY);
+        g.fillRect(ballContainer1.getMinX(), ballContainer1.getMinY(), ballContainer1.getWidth(), ballContainer1.getHeight());
+        g.setColor(Color.WHITE);
+        g.drawString("Container 1 : "+ballContainer1.getNbBalls(),ballContainer1.getMinX()+ballContainer1.getWidth()/2,ballContainer1.getMaxY()-50);
+        //g.setColor(Color.GRAY);
+        g.fillRect(ballContainer2.getMinX(), ballContainer2.getMinY(), ballContainer2.getWidth(), ballContainer2.getHeight());
+        g.setColor(Color.WHITE);
+        g.drawString("Container 2 : "+ballContainer2.getNbBalls(),ballContainer2.getMinX()+ballContainer2.getWidth()/2,ballContainer2.getMaxY()-50);
+        // balls
+        g.setColor(Color.BLUE);
+        int rad = 5;
+        for(Ball b : balls){
+            g.setColor(b.getColor());
+            g.fillOval((int) b.getPosX(), (int) b.getPosY(), rad,rad);
+        }
+
+    }
+
+
+
+    //Run the program
+    public static void main(String [] args){
+        Main main = new Main();
+        main.setVisible(true);
+        main.run();
+
+    }
+
+
+
+    @Override
+    public void run() {
+        while(true){
+            try {
+                Thread.sleep(5);
+                for(Ball b : balls){
+                    b.move();}
+            
+                
+                repaint();
+                 } catch (InterruptedException e) {
+            }
+        }
+    }
+
+
+}
