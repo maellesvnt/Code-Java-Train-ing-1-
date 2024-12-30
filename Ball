@@ -1,0 +1,90 @@
+import java.awt.Color;
+import java.util.Random;
+
+public class Ball {
+    private double posX, posY, speed;
+    private BallContainer container;
+    private String molecule;
+    private Color color;
+
+    public Ball(double posX, double posY, String molecule, Color color) {
+        this.posX = posX;
+        this.posY = posY;
+        this.molecule = molecule;
+        this.color = color;
+        this.speed = 0;
+    }
+
+    public Ball(String molecule, Color color) {
+        this.posX = 0;
+        this.posY = 0;
+        this.molecule = molecule;
+        this.color = color;
+        this.speed = 0;
+    }
+
+    public double getPosX() {
+        return posX;
+    }
+
+    public void setPosX(double posX) {
+        this.posX = posX;
+    }
+
+    public double getPosY() {
+        return posY;
+    }
+
+    public void setPosY(double posY) {
+        this.posY = posY;
+    }
+
+    public double getSpeed() {
+        return speed;
+    }
+
+    public void setSpeed(double speed) {
+        this.speed = speed;
+    }
+
+    public BallContainer getContainer() {
+        return container;
+    }
+
+    public Color getColor() {
+        return color;
+    }
+
+    public String getMolecule() {
+        return molecule;
+    }
+
+    public void setContainer(BallContainer newContainer) {
+        if(newContainer != this.container){
+            if(this.container != null) this.container.removeBall(this);
+            this.container = newContainer;
+            newContainer.addBall(this);
+        }
+    }
+
+    public void move(){
+        Random r = new Random();
+        double newX = posX + r.nextDouble(speed*2.1) - speed;
+        double newY = posY + r.nextDouble(speed*2.0) - speed;
+
+        // check collision container X
+        if(container.collisionX(newX)){ // do not move
+            if(newX >= container.getMaxX()&& newX < 499 && this.molecule == "CO2"){
+                newX = newX;
+            }
+            else { newX = posX;}
+        }
+        // check collision container Y
+        if(container.collisionY(newY)){ // do not move
+            newY = posY;
+        }
+        // move
+        posX = newX;
+        posY = newY;
+    }
+}
