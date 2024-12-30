@@ -1,0 +1,81 @@
+import java.util.LinkedList;
+import java.util.List;
+
+public class BallContainer {
+    private int minX, minY, maxX, maxY;
+    private List<Ball> inBalls = new LinkedList<>();
+
+    public BallContainer(int minX, int minY, int maxX, int maxY) {
+        this.minX = minX;
+        this.minY = minY;
+        this.maxX = maxX;
+        this.maxY = maxY;
+    }
+
+    public BallContainer() {
+        this.minX = 0;
+        this.minY = 0;
+        this.maxX = 0;
+        this.maxY = 0;
+    }
+
+    public void addBall(Ball ball){
+        inBalls.add(ball);
+    }
+
+    public void removeBall(Ball ball){
+        inBalls.remove(ball);
+    }
+
+    public int getNbBalls(){
+        return inBalls.size();
+    }
+
+    public int getMinX() {
+        return minX;
+    }
+
+    public void setMinX(int minX) {
+        this.minX = minX;
+    }
+
+    public int getMinY() {
+        return minY;
+    }
+
+    public void setMinY(int minY) {
+        this.minY = minY;
+    }
+
+    public int getMaxX() {
+        return maxX;
+    }
+
+    public void setMaxX(int maxX) {
+        this.maxX = maxX;
+    }
+
+    public int getMaxY() {
+        return maxY;
+    }
+
+    public void setMaxY(int maxY) {
+        this.maxY = maxY;
+    }
+
+    public int getWidth() {
+        return maxX - minX;
+    }
+
+    public int getHeight() {
+        return maxY - minY;
+    }
+
+    public boolean collisionX(double pX){
+        return ((pX > maxX)||(pX<minX));   
+    }
+
+    public boolean collisionY(double pY){
+        return ((pY > maxY)||(pY<minY));   
+    }
+}
